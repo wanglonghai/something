@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>日志</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"   media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div class="demoTable">姓名：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="personName" autocomplete="off">
+    </div>
+    <button class="layui-btn" th:onclick="'javascript:search();'">搜索</button>
+</div>
+<table class="layui-hide" id="test" lay-filter="testFilter"></table>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<script  th:inline="none">
+    function search(){
+        var value=document.getElementById("personName").value;
+        if(value){
+            layui.table.reload('test', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    personName:value
+                }
+            }, 'data');
+        }
+    }
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            ,url:'/info/summary'
+            ,contentType:'application/json'
+            ,method:'POST'
+            ,limit:8//每页显示的记录数量
+            ,limits:[5,8,10,15,20]//可选择每页显示的数量
+            ,cols: [[
+                {field:'personName', width:80, title: '姓名'}
+                ,{field:'attendanceDate', width:115, title: '时间'}
+                ,{field:'summaryAddStatus',width:90,title:'状态'}
+                ,{field:'week',width:80,title:'星期'}
+                ,{field:'summaryToday', title: '今日总结'}
+            ]],
+            done: function (res, curr, count) {
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                $("[data-field='summaryAddStatus']").children().each(function () {
+                    if ($(this).text() == '0') {
+                        $(this).text('已提交');
+                    } else if ($(this).text() == '-1') {
+                        $(this).text('未提交');
+                    }else if ($(this).text() == '-2') {
+                        $(this).text('无需提交');
+                    }else  {
+                        $(this).text('状态');
+                    }
+                });
+            }
+            ,page: true
+        });
+        //监听行单击事件（双击事件为：rowDouble）
+        table.on('row(testFilter)', function(obj){
+            var data = obj.data;
+            layer.msg(data.summaryToday, { icon: 7, time: 1000, shade: [0.6, '#000', true] });
+
+            // layer.alert(JSON.stringify(data), {
+            //     title: '当前行数据：'
+            // });
+
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+    });
+
+</script>
+</body>
+
+</html>
