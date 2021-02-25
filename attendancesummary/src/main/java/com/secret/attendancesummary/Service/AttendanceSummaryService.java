@@ -16,4 +16,8 @@ public interface AttendanceSummaryService extends IService<AttendanceSummary> {
     void SaveMulti(List<MySummaryAppletQueryResult> summaryAppletQueryResultList);
     List<MySummaryAppletQueryResult> getSummaryList(MySummaryAppletQueryDto attendanceApplyListQuery);
     List<MySummaryAppletQueryResult> makeDataFromHttp(MySummaryAppletQueryDto attendanceApplyListQuery);
+
+    void clearRepeatSummary();
+
+    List<String> getColumnValues(String department_name);
 }

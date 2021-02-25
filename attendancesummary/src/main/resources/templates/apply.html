@@ -10,10 +10,31 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<div class="demoTable">姓名：
+<div class="demoTable">&nbsp;&nbsp;姓名&nbsp;&nbsp;
     <div class="layui-inline">
         <input class="layui-input" name="id" id="applyName" autocomplete="off">
-    </div>
+    </div><br/>&nbsp;&nbsp;类型&nbsp;&nbsp;
+    <div class="layui-inline">
+        <select name="applyTypeName"  class="layui-input select">
+            <option value="请假" selected="" >&nbsp;&nbsp;请假&nbsp;&nbsp;</option>
+            <option value="补卡" >&nbsp;&nbsp;补卡&nbsp;&nbsp;&nbsp;&nbsp;</option>
+        </select>
+    </div><br/>&nbsp;&nbsp;子类&nbsp;&nbsp;
+    <div class="layui-inline">
+        <select name="applySubTypeName"  class="layui-input select">
+            <option value="" selected="" ></option>
+            <option value="事假" >&nbsp;&nbsp;事假&nbsp;&nbsp;</option>
+            <option value="婚假" >&nbsp;&nbsp;婚假&nbsp;&nbsp;</option>
+            <option value="病假" >&nbsp;&nbsp;病假&nbsp;&nbsp;</option>
+            <option value="产假" >&nbsp;&nbsp;产假&nbsp;&nbsp;</option>
+            <option value="公休" >&nbsp;&nbsp;公休&nbsp;&nbsp;</option>
+            <option value="丧假" >&nbsp;&nbsp;丧假&nbsp;&nbsp;</option>
+            <option value="补卡" >&nbsp;&nbsp;补卡&nbsp;&nbsp;</option>
+        </select>
+    </div><br/>&nbsp;&nbsp;大于&nbsp;&nbsp;
+    <div class="layui-inline">
+        <input id="applyDuration" class="layui-input layui-input-number" min="0" max="100" step="1" data-prec="4">
+    </div>天<br/>
     <button class="layui-btn" th:onclick="'javascript:search();'">搜索</button>
 </div>
 <table class="layui-hide" id="test" lay-filter="testFilter"></table>
@@ -25,24 +46,40 @@
 <script th:src="@{/layui/layui.js}"></script>
 <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <script  th:inline="none">
-    function search(){
-        var value=document.getElementById("applyName").value;
-        if(value){
-            layui.table.reload('test', {
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-                ,where: {
-                    applyName:value
-                }
-            }, 'data');
+    function getParams(){
+        var applyName=document.getElementById("applyName").value;
+        var applyDuration=document.getElementById("applyDuration").value;
+        var applyTypeName=$("select[name=applyTypeName]").val();
+        var applySubTypeName=$("select[name=applySubTypeName]").val();
+        console.log(typeof applyDuration);
+        if(applyDuration){
+            if(isNaN(applyDuration)){
+                layer.msg('请输入数字', { icon: 7, time: 1000, shade: [0.6, '#000', true] });
+            }
         }
+        return {
+            applyName:applyName,
+            applyDuration:applyDuration,
+            applyTypeName:applyTypeName,
+            applySubTypeName:applySubTypeName
+        };
+    }
+    function doSearch(params) {
+        layui.table.reload('test', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: params
+        }, 'data');
+    }
+    function search(){
+        doSearch(getParams());
     }
     layui.use(['table','carousel','laytpl', 'form'], function(){
         var table = layui.table;
         table.render({
             elem: '#test'
-            ,url:'/info/apply'
+            ,url:'/apply/list'
             ,contentType:'application/json'
             ,method:'POST'
             ,limit:8//每页显示的记录数量
@@ -51,11 +88,11 @@
                 {field:'applyName', width:80, title: '姓名'}
                 ,{field:'applyTypeName', width:80, title: '类型'}
                 ,{field:'applySubTypeName', width:80, title: '子类型'}
+                ,{field:'applyReason',width:300,title: '理由'}
+                ,{field:'createTime', width:150, title: '申请时间', sort: true}
                 ,{field:'applyDuration', width:100, title: '时长（天）'}
                 ,{field:'applyStartTimeStr', width:120, title: '开始时间'}
                 ,{field:'applyEndTimeStr', width:120, title: '结束时间'}
-                ,{field:'createTime', width:150, title: '申请时间', sort: true}
-                ,{field:'applyReason',width:300,title: '理由', sort: true}
                 ,{field:'statusName', width:80, title: '状态'}
                 ,{field:'auditorName', width:80, title: '审批人'}
             ]]

@@ -10,35 +10,75 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<div class="demoTable">姓名：
+<div class="demoTable">&nbsp;&nbsp;姓名&nbsp;&nbsp;
     <div class="layui-inline">
         <input class="layui-input" name="id" id="personName" autocomplete="off">
     </div>
+    <br/>
+    &nbsp;&nbsp;部门&nbsp;&nbsp;
+    <div class="layui-inline">
+        <select name="departmentName" lay-filter="departmentFilter" class="layui-input select">
+            <option value=""  selected=""></option>
+            <option th:each="dept:${department}"  th:value="${dept}" th:text="${dept}"></option>
+        </select>
+    </div>    <br/>
+    &nbsp;&nbsp;公司&nbsp;&nbsp;
+    <div class="layui-inline">
+        <select name="companyName" lay-filter="companyFilter" class="layui-input select">
+            <option value="" selected="" ></option>
+            <option th:each="com:${company}"  th:value="${com}" th:text="${com}"></option>
+        </select>
+    </div><br/>&nbsp;&nbsp;
     <button class="layui-btn" th:onclick="'javascript:search();'">搜索</button>
+    <button class="layui-btn" th:onclick="'javascript:clearRepeat();'">去重</button>
 </div>
 <table class="layui-hide" id="test" lay-filter="testFilter"></table>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script th:src="@{/layui/layui.js}"></script>
 <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <script  th:inline="none">
-    function search(){
-        var value=document.getElementById("personName").value;
-        if(value){
-            layui.table.reload('test', {
-                page: {
-                    curr: 1 //重新从第 1 页开始
+    function clearRepeat() {
+        $.ajax({
+                type:"post",
+                url:"/summary/clearRepeatSummary",
+                async:false,
+                success:function (d) {
+                    console.log(d);
+                    layer.msg(d, { icon: 7, time: 1000, shade: [0.8, '#000', true] });
+                },
+                error:function (d) {
+                    alert(d);
                 }
-                ,where: {
-                    personName:value
-                }
-            }, 'data');
-        }
+            })
     }
-    layui.use('table', function(){
+    function doSearch(params){
+        layui.table.reload('test', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: params
+        }, 'data');
+    }
+    function getParams(){
+        var value=document.getElementById("personName").value;
+        var departmentName=$("select[name=departmentName]").val();
+        var companyName=$("select[name=companyName]").val();
+        return {
+            personName:value,
+            departmentName:departmentName,
+            companyName:companyName
+        };
+    }
+    function search(){
+        console.log(getParams());
+        doSearch(getParams());
+    }
+    layui.use(['table','form'], function(){
         var table = layui.table;
+        var form = layui.form;
         table.render({
             elem: '#test'
-            ,url:'/info/summary'
+            ,url:'/summary/list'
             ,contentType:'application/json'
             ,method:'POST'
             ,limit:8//每页显示的记录数量
@@ -46,9 +86,8 @@
             ,cols: [[
                 {field:'personName', width:80, title: '姓名'}
                 ,{field:'attendanceDate', width:115, title: '时间'}
+                ,{field:'summaryToday',width:300, title: '今日总结'}
                 ,{field:'summaryAddStatus',width:90,title:'状态'}
-                ,{field:'week',width:80,title:'星期'}
-                ,{field:'summaryToday', title: '今日总结'}
             ]],
             done: function (res, curr, count) {
                 //如果是异步请求数据方式，res即为你接口返回的信息。
@@ -71,14 +110,21 @@
         table.on('row(testFilter)', function(obj){
             var data = obj.data;
             layer.msg(data.summaryToday, { icon: 7, time: 1000, shade: [0.6, '#000', true] });
-
-            // layer.alert(JSON.stringify(data), {
-            //     title: '当前行数据：'
-            // });
-
             //标注选中样式
             obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
         });
+        //没效果？
+        // form.on('select(departmentFilter)', function (data) {
+        //     alert(data);
+        //     var departmentName=$("select[name=departmentName]").val();
+        //     alert(departmentName);
+        //     doSearch(getParams);
+        // });
+        // form.on('select(companyFilter)', function (data) {
+        //     var companyName=$("select[name=companyName]").val();
+        //     alert(companyName);
+        //     doSearch(getParams);
+        // });
     });
 
 </script>

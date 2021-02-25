@@ -117,6 +117,17 @@ public class AttendanceSummaryServiceImpl extends ServiceImpl<AttendanceSummaryD
         d.forEach(a->dealData(a));
         return MySummaryAppletQueryResultList;
     }
+
+    @Override
+    public void clearRepeatSummary() {
+        this.baseMapper.clearRepeatSummary();
+    }
+
+    @Override
+    public List<String> getColumnValues(String fieldName) {
+        return this.baseMapper.getColumnValues(fieldName);
+    }
+
     private  void dealData(List<MySummaryAppletQueryResult> MySummaryAppletQueryResultList){
         if(MySummaryAppletQueryResultList.size()>0){
             attendanceSummaryService.SaveMulti(MySummaryAppletQueryResultList);

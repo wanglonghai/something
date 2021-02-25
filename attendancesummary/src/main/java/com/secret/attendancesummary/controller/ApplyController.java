@@ -14,6 +14,7 @@ import com.secret.attendancesummary.common.login.TokenUtils;
 import com.secret.attendancesummary.entity.*;
 import com.secret.attendancesummary.job.AttendanceJob;
 import com.secret.attendancesummary.job.SummaryJob;
+import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,26 +37,24 @@ import java.util.List;
  * @Version 1.0
  */
 @Controller
-@RequestMapping(value = "/info")
-public class InfoController {
+@RequestMapping(value = "/apply")
+public class ApplyController {
     @Autowired
     TokenUtils tokenUtils;
     @Autowired
     AttendanceApplyService attendanceApplyService;
     @Autowired
-    AttendanceRecordService attendanceRecordService;
-    @Autowired
-    AttendanceSummaryService attendanceSummaryService;
-    @Autowired
-    SummaryJob summaryJob;
-    @Autowired
     AttendanceJob attendanceJob;
     @ResponseBody
-    @PostMapping("/apply")
+    @PostMapping("/list")
     @SneakyThrows
     public LayuiTableResultUtil<List> getAttendanceRecords(@RequestBody  AttendanceApplyDto attendanceApplyDto){
         IPage<AttendanceApply> pageMy= new Page<>(attendanceApplyDto.getPage(),attendanceApplyDto.getLimit());
         QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(attendanceApplyDto.getApplyTypeName()),"apply_type_name", attendanceApplyDto.getApplyTypeName());
+        queryWrapper.eq(StringUtils.isNotBlank(attendanceApplyDto.getApplySubTypeName()),"apply_sub_type_name", attendanceApplyDto.getApplySubTypeName());
+        //大于等于
+        queryWrapper.ge(attendanceApplyDto.getApplyDuration()!=null,"apply_duration", attendanceApplyDto.getApplyDuration());
         queryWrapper.like(StringUtils.isNotBlank(attendanceApplyDto.getApplyName()),"apply_name",attendanceApplyDto.getApplyName());
         queryWrapper.orderByDesc("create_time");
         IPage<AttendanceApply> r=attendanceApplyService.page(pageMy,queryWrapper);
@@ -64,36 +63,13 @@ public class InfoController {
         return list;
     }
     @ResponseBody
-    @PostMapping("/summary")
-    public LayuiTableResultUtil<List> getSummaryRecords(@RequestBody AttendanceSummaryDto attendanceSummary){
-        IPage<AttendanceSummary> pageMy= new Page(attendanceSummary.getPage(),attendanceSummary.getLimit());
-        QueryWrapper queryWrapper=new QueryWrapper();
-        queryWrapper.like(StringUtils.isNotBlank(attendanceSummary.getPersonName()),"person_name",attendanceSummary.getPersonName());
-        queryWrapper.select("person_name","attendance_date","summary_today","summary_add_status","week");
-        queryWrapper.orderByDesc("attendance_date");
-        IPage<AttendanceSummary> r=attendanceSummaryService.page(pageMy,queryWrapper);
-        Long total=Long.valueOf(r.getTotal());
-        LayuiTableResultUtil<List> list=new LayuiTableResultUtil<>("",r.getRecords(),0,total.intValue());
-        return list;
-    }
-    @ResponseBody
-    @GetMapping("/doSummary/{day}")
-    public String doSummary(@PathVariable(value = "day") Integer day){
-        summaryJob.doSummaryData(day);
-        return "成功导入"+Math.abs(day)+"天前的日志数据";
-    }
-    @ResponseBody
     @GetMapping("/doApply/{day}")
     public String doApply(@PathVariable(value = "day") Integer day){
         attendanceJob.doApplyData(day);
         return "成功导入"+Math.abs(day)+"天前的审批数据";
     }
-    @GetMapping("/applyPage")
+    @GetMapping("/page")
     public String applyPage(){
         return "apply";
-    }
-    @GetMapping("/summaryPage")
-    public String summaryPage(){
-        return "summary";
     }
 }

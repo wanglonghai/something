@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>登录</title>
+</head>
+<body class="text-center">
+<form class="form-signin"  th:action="@{/login/doLogin}" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <p style="color:red" th:text="${msg}"  th:if="${not #strings.isEmpty(msg)}"></p>
+    <label class="sr-only" >userName</label>
+    <input type="text" name="userName" class="form-control" placeholder="userName"
+           required="" autofocus="">
+    <br/>
+    <label class="sr-only" >passWord</label>
+    <input type="password" name="passWord" class="form-control" placeholder="passWord"
+           required="">
+    <button class="btn btn-lg btn-primary btn-block" type="submit" >sign in</button>
+</form>
+</body>
