@@ -1,0 +1,16 @@
+users:
+  list:
+    - {name: 15280404395,pwd: 96e79218965eb72c92a549dd5a330112,isSummary: true}
+    - {name: 18760106580,pwd: a3672d1a3ee5ffc11a1ead9d4953acc1,isSummary: true}
+attendance:
+  serviceUrl: http://localhost:8086
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    # 方式一：  引用外部文件
+    #        url: jdbc:sqlite:D:/eclipse/xy.db
+    #方式二： 引用项目中的文件
+    #    url: jdbc:sqlite::resource:static/sqlite/attendance.db
+    url: jdbc:sqlite:sqlite/attendance.db?date_string_format=yyyy-MM-dd HH:mm:ss
+    username:
+    password:
