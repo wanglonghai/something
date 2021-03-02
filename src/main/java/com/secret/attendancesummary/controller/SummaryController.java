@@ -38,6 +38,7 @@ public class SummaryController {
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(attendanceSummary.getPersonName()),"person_name",attendanceSummary.getPersonName());
         queryWrapper.in(attendanceSummary.getDepartments().size()>0,"department_name",attendanceSummary.getDepartments());
+        queryWrapper.eq(attendanceSummary.getAttendanceDate()!=null,"attendance_date",attendanceSummary.getAttendanceDate());
         queryWrapper.eq(StringUtils.isNotBlank(attendanceSummary.getDepartmentName()),"department_name",attendanceSummary.getDepartmentName());
         queryWrapper.eq(StringUtils.isNotBlank(attendanceSummary.getCompanyName()),"company_name",attendanceSummary.getCompanyName());
         queryWrapper.select("person_name","attendance_date","summary_today","summary_add_status","week");

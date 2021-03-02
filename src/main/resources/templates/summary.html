@@ -29,6 +29,11 @@
             <option th:each="com:${company}"  th:value="${com}" th:text="${com}"></option>
         </select>
     </div><br/>&nbsp;&nbsp;
+    日期
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="dateContainer" placeholder="yyyy-MM-dd">
+    </div>
+    <br/>
     <button class="layui-btn" th:onclick="'javascript:search();'">搜索</button>
     <button class="layui-btn" th:onclick="'javascript:clearRepeat();'">去重</button>
 </div>
@@ -73,7 +78,7 @@
         console.log(getParams());
         doSearch(getParams());
     }
-    layui.use(['table','form'], function(){
+    layui.use(['table','form','laydate'], function(){
         var table = layui.table;
         var form = layui.form;
         table.render({
@@ -86,7 +91,8 @@
             ,cols: [[
                 {field:'personName', width:80, title: '姓名'}
                 ,{field:'attendanceDate', width:115, title: '时间'}
-                ,{field:'summaryToday',width:300, title: '今日总结'}
+                ,{field:'summaryToday', title: '今日总结'}
+                ,{field:'week', width:80,title: '星期'}
                 ,{field:'summaryAddStatus',width:90,title:'状态'}
             ]],
             done: function (res, curr, count) {
@@ -112,6 +118,17 @@
             layer.msg(data.summaryToday, { icon: 7, time: 1000, shade: [0.6, '#000', true] });
             //标注选中样式
             obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+        var laydate = layui.laydate;
+        //日期时间选择器
+        laydate.render({
+            elem: '#dateContainer'
+            ,calendar: true
+            ,done: function(value, date, endDate){
+                var p=getParams();
+                p.attendanceDate=value;
+                doSearch(p);
+            }
         });
         //没效果？
         // form.on('select(departmentFilter)', function (data) {

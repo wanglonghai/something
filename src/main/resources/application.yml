@@ -14,6 +14,10 @@ spring:
     cache: false  #是否使用缓存
     mode: HTML  #严格的HTML语法模式
     suffix: .html  #后缀名
+  jackson:
+    default-property-inclusion: non_null
+    date-format: "yyyy-MM-dd"
+    time-zone: "GMT+8"
 logging:
   level: debug
   level.com.xuanyin: debug
