@@ -1,4 +1,8 @@
-package com.secret.attendancesummary.entity;
+package com.secret.attendancesummary.entity.dto;
+import com.secret.attendancesummary.entity.AttendanceApply;
+import com.secret.attendancesummary.entity.AttendanceApplyStatusEnum;
+import com.secret.attendancesummary.entity.AttendanceApplySubTypeEnum;
+import com.secret.attendancesummary.entity.AttendanceApplyTypeEnum;
 import lombok.Data;
 
 @Data

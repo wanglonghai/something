@@ -1,9 +1,6 @@
 package com.secret.attendancesummary.job;
 import com.alibaba.fastjson.JSON;
-import com.secret.attendancesummary.Service.AttendanceRecordService;
 import com.secret.attendancesummary.Service.AttendanceSummaryService;
-import com.secret.attendancesummary.entity.AttendanceApplyListQuery;
-import com.secret.attendancesummary.entity.AttendanceApplyListVo;
 import com.secret.attendancesummary.entity.MySummaryAppletQueryDto;
 import com.secret.attendancesummary.entity.MySummaryAppletQueryResult;
 import lombok.SneakyThrows;

@@ -1,6 +1,7 @@
-package com.secret.attendancesummary.entity;
+package com.secret.attendancesummary.entity.dto;
 
 import com.secret.attendancesummary.common.DateUtil;
+import com.secret.attendancesummary.entity.AttendanceApplySubTypeEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;

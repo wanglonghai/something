@@ -1,9 +1,10 @@
-package com.secret.attendancesummary.entity;
+package com.secret.attendancesummary.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.secret.attendancesummary.entity.AttendanceSummary;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;

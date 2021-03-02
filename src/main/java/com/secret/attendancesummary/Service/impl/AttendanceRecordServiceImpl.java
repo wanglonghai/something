@@ -1,7 +1,6 @@
 package com.secret.attendancesummary.Service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.secret.attendancesummary.Service.AttendanceApplyService;
@@ -13,8 +12,8 @@ import com.secret.attendancesummary.common.html.HttpParamers;
 import com.secret.attendancesummary.common.html.HttpUtils;
 import com.secret.attendancesummary.common.login.TokenUtils;
 import com.secret.attendancesummary.entity.AttendanceApplyListQuery;
-import com.secret.attendancesummary.entity.AttendanceApplyListVo;
-import com.secret.attendancesummary.entity.AttendanceCheckBaseDetailsVo;
+import com.secret.attendancesummary.entity.dto.AttendanceApplyListVo;
+import com.secret.attendancesummary.entity.dto.AttendanceCheckBaseDetailsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

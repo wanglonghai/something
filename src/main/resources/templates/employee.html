@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>人员</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"   media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div class="demoTable">&nbsp;&nbsp;姓名&nbsp;&nbsp;
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="perName" autocomplete="off">
+    </div>
+    <br/>&nbsp;门店
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="deptName" autocomplete="off">
+    </div>&nbsp;
+    <br/>
+    &nbsp;居住
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="address" autocomplete="off">
+    </div>&nbsp;
+    <br/>
+    &nbsp;毕业学校
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="graduateSchool" autocomplete="off">
+    </div>&nbsp;
+    <br/>
+    &nbsp;&nbsp;状态&nbsp;
+    <div class="layui-inline">
+        <select name="status" lay-filter="statusFilter" class="layui-input select">
+            <option value=""  selected=""></option>
+            <option th:each="pn:${statusName}"  th:value="${pn}" th:text="${pn}"></option>
+        </select>
+    </div><br/>
+    &nbsp;&nbsp;岗位&nbsp;
+    <div class="layui-inline">
+        <select name="positionName" lay-filter="positionFilter" class="layui-input select">
+            <option value=""  selected=""></option>
+            <option th:each="pn:${positionName}"  th:value="${pn}" th:text="${pn}"></option>
+        </select>
+    </div><br/>
+    &nbsp;&nbsp;学历&nbsp;
+    <div class="layui-inline">
+        <select name="educationName" lay-filter="educationFilter" class="layui-input select">
+            <option value=""  selected=""></option>
+            <option th:each="pn:${educationDesc}"  th:value="${pn}" th:text="${pn}"></option>
+        </select>
+    </div>
+    <br/>
+
+    <button class="layui-btn" th:onclick="'javascript:search();'">搜索</button>
+</div>
+<table class="layui-hide" id="test" lay-filter="testFilter"></table>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<script  th:inline="none">
+    function doSearch(params){
+        layui.table.reload('test', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: params
+        }, 'data');
+    }
+    function getParams(){
+        var value=document.getElementById("perName").value;
+        var deptName=document.getElementById("deptName").value;
+        var status=$("select[name=status]").val();
+        var positionName=$("select[name=positionName]").val();
+        var educationName=$("select[name=educationName]").val();
+        var graduateSchool=document.getElementById("graduateSchool").value;
+        var address=document.getElementById("address").value;
+
+        return {
+            perName:value,
+            deptName:deptName,
+            status:status,
+            positionName:positionName,
+            educationDesc:educationName,
+            address:address,
+            graduateSchool:graduateSchool
+        };
+    }
+    function search(){
+        console.log(getParams());
+        doSearch(getParams());
+    }
+    layui.use(['table','form'], function(){
+        var table = layui.table;
+        var form = layui.form;
+        table.render({
+            elem: '#test'
+            ,url:'/employee/list'
+            ,contentType:'application/json'
+            ,method:'POST'
+            ,limit:8//每页显示的记录数量
+            ,limits:[5,8,10,15,20]//可选择每页显示的数量
+            ,cols: [[
+                {field:'perName', width:80, title: '姓名'}
+                ,{field:'status',width:90,title:'状态'}
+                ,{field:'regTime',width:120,title:'入职时间'}
+                ,{field:'deptName', width:120 ,title: '门店'}
+                ,{field:'positionName',width:110, title: '岗位'}
+                ,{field:'levelName', width:80,title: '职级'}
+                ,{field:'cardId', width:80,title: '身份证'}
+                ,{field:'sex', width:80,title: '性别'}
+                ,{field:'address', width:80,title: '现居住'}
+                ,{field:'educationDesc', width:80,title: '学历'}
+                ,{field:'speciality', width:80,title: '专业'}
+                ,{field:'qq', width:80,title: 'qq'}
+                ,{field:'email', width:80,title: '邮箱'}
+                ,{field:'tel', width:80,title: '电话'}
+                ,{field:'birthday', width:80,title: '生日'}
+                ,{field:'emergencyContact', width:150,title: '紧急联系人'}
+                ,{field:'relationship', width:150,title: '紧急联系人关系'}
+                ,{field:'contactTelephone', width:150,title: '紧急联系人电话'}
+                ,{field:'graduateSchool', width:120,title: '毕业学校'}
+                ,{field:'accountAddress', width:150,title: '户口所在地'}
+                ,{field:'bankcard', width:120,title: '银行卡号'}
+                ,{field:'graduation', width:120,title: '毕业时间'}
+                ,{field:'userImage', width:80,title: '头像'}
+                ,{field:'nativePlace', width:120,title: '户籍地址'}
+                ,{field:'bank', width:80,title: '银行'}
+                ,{field:'partnerLevel', width:140,title: '合伙人级别'}
+                ,{field:'partnerType', width:140,title: '合伙人类型'}
+                ,{field:'weChat', width:80,title: '微信'}
+            ]],
+            done: function (res, curr, count) {
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                $("[data-field='sex']").children().each(function () {
+                    if ($(this).text() == '0') {
+                        $(this).text('男');
+                    } else if ($(this).text() == '1') {
+                        $(this).text('女');
+                    }else  {
+                        $(this).text('性别');
+                    }
+                });
+            }
+            ,page: true
+        });
+        //监听行单击事件（双击事件为：rowDouble）
+        table.on('row(testFilter)', function(obj){
+            var data = obj.data;
+            layer.msg(JSON.stringify(data), { icon: 7, time: 1000, shade: [0.6, '#000', true] });
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+    });
+
+</script>
+</body>
+
+</html>

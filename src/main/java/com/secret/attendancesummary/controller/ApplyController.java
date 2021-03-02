@@ -1,32 +1,20 @@
 package com.secret.attendancesummary.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secret.attendancesummary.Service.AttendanceApplyService;
-import com.secret.attendancesummary.Service.AttendanceCheckService;
-import com.secret.attendancesummary.Service.AttendanceRecordService;
-import com.secret.attendancesummary.Service.AttendanceSummaryService;
 import com.secret.attendancesummary.common.LayuiTableResultUtil;
-import com.secret.attendancesummary.common.PageUtils;
 import com.secret.attendancesummary.common.login.TokenUtils;
 import com.secret.attendancesummary.entity.*;
+import com.secret.attendancesummary.entity.dto.AttendanceApplyDto;
 import com.secret.attendancesummary.job.AttendanceJob;
-import com.secret.attendancesummary.job.SummaryJob;
-import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.applet.AppletStub;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +36,7 @@ public class ApplyController {
     @ResponseBody
     @PostMapping("/list")
     @SneakyThrows
-    public LayuiTableResultUtil<List> getAttendanceRecords(@RequestBody  AttendanceApplyDto attendanceApplyDto){
+    public LayuiTableResultUtil<List> getAttendanceRecords(@RequestBody AttendanceApplyDto attendanceApplyDto){
         IPage<AttendanceApply> pageMy= new Page<>(attendanceApplyDto.getPage(),attendanceApplyDto.getLimit());
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(attendanceApplyDto.getApplyTypeName()),"apply_type_name", attendanceApplyDto.getApplyTypeName());

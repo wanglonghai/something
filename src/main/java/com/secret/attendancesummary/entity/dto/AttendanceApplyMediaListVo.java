@@ -1,4 +1,4 @@
-package com.secret.attendancesummary.entity;
+package com.secret.attendancesummary.entity.dto;
 
 import lombok.Data;
 

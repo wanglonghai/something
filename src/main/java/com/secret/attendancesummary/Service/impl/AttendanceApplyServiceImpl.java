@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.secret.attendancesummary.Service.AttendanceApplyService;
 import com.secret.attendancesummary.dao.AttendanceApplyDao;
 import com.secret.attendancesummary.entity.AttendanceApply;
-import com.secret.attendancesummary.entity.AttendanceApplyListVo;
+import com.secret.attendancesummary.entity.dto.AttendanceApplyListVo;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

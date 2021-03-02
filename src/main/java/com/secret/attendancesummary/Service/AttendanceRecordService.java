@@ -1,9 +1,8 @@
 package com.secret.attendancesummary.Service;
 import com.secret.attendancesummary.common.PageUtils;
 import com.secret.attendancesummary.entity.AttendanceApplyListQuery;
-import com.secret.attendancesummary.entity.AttendanceApplyListVo;
-import com.secret.attendancesummary.entity.AttendanceCheckBaseDetailsVo;
-import com.secret.attendancesummary.entity.UserInfo;
+import com.secret.attendancesummary.entity.dto.AttendanceApplyListVo;
+import com.secret.attendancesummary.entity.dto.AttendanceCheckBaseDetailsVo;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.secret.attendancesummary.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.secret.attendancesummary.entity.AttendanceApply;
-import com.secret.attendancesummary.entity.AttendanceApplyListVo;
+import com.secret.attendancesummary.entity.dto.AttendanceApplyListVo;
 
 import java.util.List;
 
