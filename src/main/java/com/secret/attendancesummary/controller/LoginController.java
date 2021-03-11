@@ -19,6 +19,19 @@ public class LoginController {
     public String toLoginPage(){
         return "login";
     }
+    @GetMapping("/out")
+    public String out(HttpSession session){
+        session.invalidate();
+        return "login";
+    }
+    @GetMapping("/qdAPI.html")
+    public String qdAPI( ){
+        return "/sys/qdAPI";
+    }
+    @GetMapping("/iconfont.html")
+    public String iconfont( ){
+        return "/sys/iconfont";
+    }
     @PostMapping("/doLogin")
     public String doApply(@RequestParam("userName") String userName,
                           @RequestParam("passWord") String passWord,
@@ -28,7 +41,7 @@ public class LoginController {
         if("wlh".equals(userName)&&StringUtils.isNotBlank(passWord)&&"a3672d1a3ee5ffc11a1ead9d4953acc1".equals(EncryptUtil.md5Encode(passWord))){
             LoginUser loginUser=new LoginUser();
             session.setAttribute("LoginUser",loginUser);
-            return "redirect:/summary/page";
+            return "redirect:/login/success";
         }
         else  //输入错误，清空session，提示用户名密码错误
         {
@@ -37,5 +50,8 @@ public class LoginController {
             return "login";
         }
     }
-
+    @GetMapping("/success")
+    public String success(){
+        return "sys/frame";
+    }
 }
