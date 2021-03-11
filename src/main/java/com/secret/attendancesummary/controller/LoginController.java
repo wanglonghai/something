@@ -26,11 +26,11 @@ public class LoginController {
     }
     @GetMapping("/qdAPI.html")
     public String qdAPI( ){
-        return "/sys/qdAPI";
+        return "sys/qdAPI";
     }
     @GetMapping("/iconfont.html")
     public String iconfont( ){
-        return "/sys/iconfont";
+        return "sys/iconfont";
     }
     @PostMapping("/doLogin")
     public String doApply(@RequestParam("userName") String userName,
