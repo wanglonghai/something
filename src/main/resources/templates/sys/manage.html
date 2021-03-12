@@ -15,19 +15,19 @@
     <button class="btn btn-lg btn-primary btn-block" id="applyBtn" th:onclick="'javascript:applydoApply(dayApply);'" type="button" >同步</button>
     <br/>
     <label class="sr-only" >日志</label>
-    <input type="text" name="daySummary" class="form-control" placeholder="天数"
+    <input type="text" id="daySummary" class="form-control" placeholder="天数"
            required="">
     <button class="btn btn-lg btn-primary btn-block" id="summaryBtn" th:onclick="'javascript:summarydoSummary(daySummary);'" type="button" >同步</button>
    <br/>
     <label class="sr-only" >人员</label>
-    <input type="text" name="dayEmployee" class="form-control" placeholder="天数"
+    <input type="text" id="dayEmployee" class="form-control" placeholder="天数"
            required="">
     <button class="btn btn-lg btn-primary btn-block" id="employeeBtn" th:onclick="'javascript:employeedoEmployee(dayEmployee);'" type="button" >同步</button>
     <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
     <script  th:inline="none">
         function doSearch(url) {
             $.ajax({
-                type:"post",
+                type:"get",
                 url:url,
                 async:false,
                 success:function (d) {

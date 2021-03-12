@@ -24,14 +24,6 @@ public class LoginController {
         session.invalidate();
         return "login";
     }
-    @GetMapping("/qdAPI.html")
-    public String qdAPI( ){
-        return "sys/qdAPI";
-    }
-    @GetMapping("/iconfont.html")
-    public String iconfont( ){
-        return "sys/iconfont";
-    }
     @PostMapping("/doLogin")
     public String doApply(@RequestParam("userName") String userName,
                           @RequestParam("passWord") String passWord,
@@ -52,6 +44,6 @@ public class LoginController {
     }
     @GetMapping("/success")
     public String success(){
-        return "sys/frame";
+        return "sys/index";
     }
 }
