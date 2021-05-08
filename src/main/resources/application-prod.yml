@@ -3,7 +3,7 @@ users:
     - {name: 12312312312,pwd: d333b303a4abf7965102d8f03475d71a,isSummary: true}
     - {name: 15280404395,pwd: 96e79218965eb72c92a549dd5a330112,isSummary: true}
 attendance:
-  serviceUrl: http://nsysapi.lsxjy.com.cn
+  serviceUrl: http://nsysapi.yongxinjia.com
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
